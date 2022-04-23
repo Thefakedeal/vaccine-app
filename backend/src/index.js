@@ -10,6 +10,7 @@ cron.schedule("0 0 0 * * *", async () => {
    sendMail(1)
    sendMail(3)
    sendMail(7)
+   remindAppointment()
   } catch (err) {
     console.log(err);
   }
@@ -66,4 +67,63 @@ async function sendMail(days=1){
           }
         });
       }
+}
+
+
+async function remindAppointment(days=1){
+  try {
+    const formatter = new Intl.DateTimeFormat([],{
+      timeZone:'Asia/Kathmandu',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    })
+  
+    const transporter = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.PASS,
+      },
+    });
+    const appointments = await db.appointment.findMany({
+      where:{
+        appointed_time:{
+          gte: new Date(),
+          lt: addDays(new Date(),1)
+        },
+      },
+      include:{
+        doctor:true,
+        child:true,
+        user:true
+      }
+    })
+    for(const appointment of appointments){
+      
+      const mailOptions = {
+        from: process.env.MAIL_USER,
+        to: [appointment.doctor.email,appointment.user.email],
+        subject: `Your Appointment remainder`,
+        html: `Appointment for ${appointment.child.name} of parent ${appointment.user.name}
+           is set for ${formatter.format(appointment.appointed_time)} with Doctor ${appointment.doctor.name}.
+            Thank You.  
+            `,
+      };
+     
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }

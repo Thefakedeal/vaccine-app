@@ -26,18 +26,18 @@ async function main() {
     },
   })
 
-  // const doctor = await prisma.user.upsert({
-  //   where: { email: 'doctor@doctor.com' },
-  //   update: {},
-  //   create: {
-  //     email: 'doctor@doctor.com',
-  //     name: 'Doctor',
-  //     role: "DOCTOR",
-  //     password: await bcrypt.hash('password',10)
-  //   },
-  // })
+  const doctor = await prisma.user.upsert({
+    where: { email: 'doctor@doctor.com' },
+    update: {},
+    create: {
+      email: 'doctor@doctor.com',
+      name: 'Doctor',
+      role: "DOCTOR",
+      password: await bcrypt.hash('password',10)
+    },
+  })
   
-  console.log({ admin,visitor})
+  console.log({ admin,visitor, doctor})
 }
 
 main()

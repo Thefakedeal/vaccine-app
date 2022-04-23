@@ -73,6 +73,43 @@ async function adminAuth(req, res, next) {
 }
 
 
+async function doctorAuth(req, res, next) {
+    if (!(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')) return res.status(401).json({ message: 'No Token Detected' });
+    const tokenID = req.headers.authorization.split(' ')[1];
+
+    try {
+        const token = await db.token.findUnique({
+            where: {
+                token: tokenID
+
+            },
+            include: {
+                user: true
+            }
+        })
+
+        if (!token) {
+            res.status(403)
+            const error = new Error("Invalid Token");
+            return next(error)
+        }
+
+        const user = token.user;
+
+        if(user.role !== "DOCTOR"){
+            res.status(403)
+            const error = new Error("Unauthorized");
+            return next(error)
+        }
+
+        req.user = user;
+        req.token = tokenID;
+        next();
+    } catch (err) {
+        next(err)
+    }
+}
+
 /* eslint-disable no-unused-vars */
 function errorHandler(err, req, res, next) {
     /* eslint-enable no-unused-vars */
@@ -89,5 +126,6 @@ module.exports = {
     notFound,
     errorHandler,
     userAuth,
-    adminAuth
+    adminAuth,
+    doctorAuth
 };

@@ -141,4 +141,22 @@ router.delete("/:id", userAuth,childExists, async (req, res, next) => {
     }
 })
 
+router.get("/:id/appointments", async(req,res,next)=>{
+    try {
+    
+       const appointments = await db.appointment.findMany({
+           where:{
+               childId: Number(req.params.id),
+                appointed_time:{
+                    gte: new Date(req.body.from),
+                    lte: new Date(req.body.to)
+                },
+           }
+       })
+       return res.json({data: appointments})
+    } catch (error) {
+        next(error)
+    }
+})
+
 module.exports = router
