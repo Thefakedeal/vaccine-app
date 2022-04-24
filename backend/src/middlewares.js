@@ -9,18 +9,18 @@ function notFound(req, res, next) {
 async function userAuth(req, res, next) {
     if (!(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')) return res.status(401).json({ message: 'No Token Detected' });
     const tokenID = req.headers.authorization.split(' ')[1];
-
+   
     try {
         const token = await db.token.findUnique({
             where: {
                 token: tokenID
-
             },
             include: {
                 user: true
             }
         })
-
+   
+        
         if (!token) {
             res.status(403)
             const error = new Error("Invalid Token");

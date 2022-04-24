@@ -16,6 +16,31 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/appointments",doctorAuth ,async (req, res, next) => {
+  try {
+    const appointments = await db.appointment.findMany({
+      where: {
+        doctorId: Number(req.user.id),
+        appointed_time: {
+          gte: req.query.from?new Date(req.query.from):undefined,
+          lte: req.query.to?new Date(req.query.to):undefined,
+        },
+        
+      },
+      orderBy:{
+        requested_time:'desc'
+      },
+      include:{
+        child: true,
+        user: true,
+      }
+    });
+    return res.json({ data: appointments });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     const doctor = await db.user.findFirst({
@@ -61,9 +86,9 @@ router.put("/:id/appointments", doctorAuth, async (req, res, next) => {
       data: {
         cancelled:
           cancelled !== null && cancelled !== undefined
-            ? new Boolean(cancelled)
+            ? cancelled==1
             : undefined,
-        appointed_time: new Date(date),
+        appointed_time: date? new Date(date):undefined,
       },
     });
     return res.json({ message: "Appointment Set" });
@@ -72,21 +97,6 @@ router.put("/:id/appointments", doctorAuth, async (req, res, next) => {
   }
 });
 
-router.get("/appointments",doctorAuth ,async (req, res, next) => {
-  try {
-    const appointments = await db.appointment.findMany({
-      where: {
-        doctorId: Number(req.user.id),
-        appointed_time: {
-          gte: new Date(req.body.from),
-          lte: new Date(req.body.to),
-        },
-      },
-    });
-    return res.json({ data: appointments });
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 module.exports = router;

@@ -65,7 +65,10 @@ router.get("/", userAuth, async (req, res, next) => {
     const vaccines = await db.vaccine.findMany({
       where: {
         parentId: Number(req.user.id),
-        childId: req.query.childId ? Number(req.params.childId) : undefined,
+        childId: req.query.childId ? Number(req.query.childId) : undefined,
+      },
+      orderBy:{
+      	dueDate: 'desc'
       },
       include: {
         child: true,
@@ -119,7 +122,6 @@ router.put(
   idExists,
   childRequired,
   completed,
-  dateRequired,
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
@@ -130,15 +132,13 @@ router.put(
       }
 
       const { id } = req.params;
-      const { childId, dueDate, description, completed } = req.body;
+      const { childId, completed } = req.body;
       const vaccine = await db.vaccine.update({
         where: {
           id: id,
         },
         data: {
-          dueDate: dueDate,
           childId: childId,
-          description: description,
           completed: completed !== null ? completed : undefined,
         },
       });

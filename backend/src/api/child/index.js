@@ -52,7 +52,7 @@ router.get('/:id', userAuth, async (req, res, next) => {
         const child = await db.child.findFirst({
             where: {
                 parentId: req.user.id,
-                id: req.params.id
+                id: Number(req.params.id)
             }
         })
         if (!child) {
@@ -147,10 +147,13 @@ router.get("/:id/appointments", async(req,res,next)=>{
        const appointments = await db.appointment.findMany({
            where:{
                childId: Number(req.params.id),
-                appointed_time:{
-                    gte: new Date(req.body.from),
-                    lte: new Date(req.body.to)
-                },
+               
+           },
+           orderBy:{
+           	requested_time: "desc",
+           },
+           include:{
+           	doctor: true
            }
        })
        return res.json({data: appointments})

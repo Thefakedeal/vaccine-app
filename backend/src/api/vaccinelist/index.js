@@ -68,6 +68,26 @@ router.post('/', adminAuth, nameRequired,monthsRequired,async (req,res,next)=>{
     }
 })
 
+
+router.get('/:id',async (req,res,next)=>{
+    try{
+       
+
+        const {id} = req.params
+        const vaccineList = await db.vaccineList.findFirst({
+            where:{
+                id: Number(id)
+            }
+            
+        })
+
+        res.json({data: vaccineList})
+    }catch(err){
+        next(err)
+    }
+})
+
+
 router.put('/:id', adminAuth, idExists ,nameRequired,monthsRequired,async (req,res,next)=>{
     try{
         const errors = validationResult(req);
