@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {useSelector,useDispatch} from 'react-redux'
-import {setToken as saveToken, setUser, deleteToken} from '../redux/authSlice'
+import {setToken as saveToken, deleteToken} from '../redux/authSlice'
 
 export default function useToken() {
 

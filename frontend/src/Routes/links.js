@@ -19,7 +19,7 @@ const links = [
         name:"Register",
         url: "/register",
         component: RegisterPage,
-        auth: true,
+        guest: true,
     },
 ]
 

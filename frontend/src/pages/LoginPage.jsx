@@ -47,7 +47,7 @@ export default function LoginPage() {
                         }
                         const body = await response.json()
                         setToken(body.token)
-                        navigate(`/`)
+                        navigate("/")
                     }catch(err){
                         setError(err.message||"Something Went Wrong")
                     }finally{

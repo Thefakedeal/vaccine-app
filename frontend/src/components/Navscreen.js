@@ -3,6 +3,7 @@ import { ImCross } from "react-icons/im";
 import Backdrop from "./Backdrop";
 import { Link } from "react-router-dom";
 import useUser from "../hooks/useUser";
+import Logout from "./Logout";
 export default function Navscreen({ handleClose, links = [] }) {
   const {user, isAdmin} = useUser();
   return (
@@ -24,6 +25,7 @@ export default function Navscreen({ handleClose, links = [] }) {
               </Link>
             </li>
           ))}
+          <li>{user && <Logout/>}</li>
       </ul>
     </Backdrop>
   );

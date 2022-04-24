@@ -1,5 +1,7 @@
 import React from 'react'
 import {Route, Routes} from 'react-router-dom'
+import Auth from '../components/ProtectedRoutes/Auth'
+import Guest from '../components/ProtectedRoutes/Guest'
 import Home from '../Layouts/Home'
 import links from './links'
 // import HomePage from '../pages/HomePage'
@@ -12,9 +14,16 @@ export default function Router() {
     <Routes>
       <Route path="/" element={<Home />}>
       {
-          links.map(link=>(
-              <Route key={link.name} path={link.url} element={<link.component />} />
-          ))
+          links.map(link=>{
+            if(link.guest){
+              return <Route key={link.name} path={link.url} element={<Guest element={<link.component />}/>} />
+            }
+            if(link.auth){
+              return <Route key={link.name} path={link.url} element={<Auth element={<link.component />}/>} />
+           
+            }
+            return <Route key={link.name} path={link.url} element={<link.component />} />
+          })
       }
       
       </Route>

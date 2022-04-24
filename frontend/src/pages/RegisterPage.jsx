@@ -32,7 +32,7 @@ export default function RegisterPage() {
                                  Yup.ref('password'),null
                              ],"Passwords Must Match"
                          ),
-                         role: Yup.string().oneOf(["VISITOR","GUIDE"],"Role Doesnt exist")
+                         role: Yup.string().oneOf(["VISITOR","DOCTOR"],"Role Doesnt exist")
                      })
                  }
                  onSubmit={async (values,{setSubmitting, setErrors})=>{
