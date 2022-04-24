@@ -1,5 +1,6 @@
 import { Button, notification } from 'antd'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import useToken from '../../hooks/useToken'
 import { doPost } from '../../utils/request'
 
@@ -49,7 +50,10 @@ export default function BookedVaccineCard({booking, refresh}) {
             {booking.vaccine.name}
         </div>
         <div className="card-body">
-            <p className='py-1'>{new String(booking.vaccine.description).substring(0,100)}</p>
+            <p className='py-1'>{new String(booking.vaccine.description).substring(0,100)}
+           <Link className='mx-1' to={`/vaccine/${booking.vaccine.id}`}>Read More</Link>
+
+            </p>
             <div className="py-1">
                 <div>Date: {new Date(booking.dueDate).toLocaleDateString()}</div>
                 <div>Status: {booking.completed?"Completed":"Not Completed"}</div>

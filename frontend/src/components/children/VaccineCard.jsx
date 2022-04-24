@@ -1,5 +1,6 @@
 import { Button } from 'antd'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function VaccineCard({vaccine, handleBooking}) {
   return (
@@ -9,7 +10,9 @@ export default function VaccineCard({vaccine, handleBooking}) {
            <div>
                Months: {vaccine.months}
            </div>
-           <p className='py-1'>{new String(vaccine.description).substring(0,100)}</p>
+           <p className='py-1'>{new String(vaccine.description).substring(0,100)}
+           <Link className='mx-1' to={`/vaccine/${vaccine.id}`}>Read More</Link>
+           </p>
            <Button
             onClick={handleBooking}
            >
