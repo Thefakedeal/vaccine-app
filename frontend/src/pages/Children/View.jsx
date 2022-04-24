@@ -2,6 +2,7 @@ import { Skeleton } from "antd";
 import { differenceInMonths } from "date-fns";
 import React from "react";
 import { useParams } from "react-router-dom";
+import Appointments from "../../components/children/Appointments";
 import BookedVaccines from "../../components/children/BookedVaccines";
 import EditChild from "../../components/children/EditChild";
 import Vaccines from "../../components/children/Vaccines";
@@ -23,6 +24,7 @@ export default function View() {
       <EditChild handleSuccess={refresh} child={data.data} token={token} />
       <Vaccines childId={data.data.id} months={differenceInMonths(new Date(),new Date(data.data.dob))}/>
       <BookedVaccines childId={data.data.id}/>
+      <Appointments childId={data.data.id}/>
     </div>
   );
 }
