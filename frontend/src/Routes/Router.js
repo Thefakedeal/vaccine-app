@@ -1,6 +1,7 @@
 import React from 'react'
 import {Route, Routes} from 'react-router-dom'
 import Auth from '../components/ProtectedRoutes/Auth'
+import Doctor from '../components/ProtectedRoutes/Doctor'
 import Guest from '../components/ProtectedRoutes/Guest'
 import Home from '../Layouts/Home'
 import links from './links'
@@ -20,7 +21,9 @@ export default function Router() {
             }
             if(link.auth){
               return <Route key={link.name} path={link.url} element={<Auth element={<link.component />}/>} />
-           
+            }
+            if(link.doctor){
+              return <Route key={link.name} path={link.url} element={<Doctor element={<link.component />}/>} />
             }
             return <Route key={link.name} path={link.url} element={<link.component />} />
           })

@@ -17,6 +17,7 @@ export default function Navscreen({ handleClose, links = [] }) {
            .filter(link=>{
             if(link.nested) return false;
             if(link.guest && user) return false;
+            if(link.doctor && (!user || user.role!=="DOCTOR")) return false;
             if(link.auth && !user) return false;
             return true;
           })

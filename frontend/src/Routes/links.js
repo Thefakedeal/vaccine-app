@@ -6,6 +6,7 @@ import ChildrenViewPage from '../pages/Children/View'
 import VaccineViewPage from '../pages/Vaccine/View'
 import VaccineIndexPage from '../pages/Vaccine/Index'
 import DoctorsPage from '../pages/DoctorsPage'
+import BookingsPage from '../pages/BookingsPage'
 const links = [
     {
         name:"Home",
@@ -55,6 +56,12 @@ const links = [
         url: "/doctors",
         component: DoctorsPage,
         
+    },
+    {
+        name:"Bookings",
+        url: "/doctor",
+        component: BookingsPage,
+        doctor: true
     },
 ]
 
