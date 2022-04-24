@@ -15,7 +15,9 @@ export default function Navscreen({ handleClose, links = [] }) {
       <ul className={styles.container}>
         {links
            .filter(link=>{
+            if(link.nested) return false;
             if(link.guest && user) return false;
+            if(link.auth && !user) return false;
             return true;
           })
           .map((link) => (

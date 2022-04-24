@@ -24,7 +24,9 @@ export default function Navbar() {
         <div className={`${styles.navlinks}  ms-auto d-none d-lg-flex me-4`}>
           { 
           links.filter(link=>{
+            if(link.nested) return false;
             if(link.guest && user) return false;
+            if(link.auth && !user) return false;
             return true;
           })
           .map(link=>(
