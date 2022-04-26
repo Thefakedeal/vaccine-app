@@ -12,20 +12,9 @@ const links = [
         name:"Home",
         url: "/",
         component: HomePage,
-        auth: true,
+       
     },
-    {
-        name:"Login",
-        url: "/login",
-        component: LoginPage,
-        guest: true,
-    },
-    {
-        name:"Register",
-        url: "/register",
-        component: RegisterPage,
-        guest: true,
-    },
+   
     {
         name:"Children",
         url: "/children",
@@ -62,6 +51,18 @@ const links = [
         url: "/doctor",
         component: BookingsPage,
         doctor: true
+    },
+    {
+        name:"Login",
+        url: "/login",
+        component: LoginPage,
+        guest: true,
+    },
+    {
+        name:"Register",
+        url: "/register",
+        component: RegisterPage,
+        guest: true,
     },
 ]
 

@@ -14,13 +14,12 @@ export default function Navbar() {
   const open = ()=>setVisible(true)
   const close = ()=>setVisible(false)
   const {user, isAdmin} = useUser()
-  const navigate = useNavigate()
+ 
   
 
   
   return (
     <header className={styles.container}>
-       <FaLessThan onClick={()=>navigate(-1)} className='fs-2 text-white'/>
         <div className={`${styles.navlinks}  ms-auto d-none d-lg-flex me-4`}>
           { 
           links.filter(link=>{

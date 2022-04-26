@@ -26,10 +26,10 @@ export default function Logout() {
     }
  
   return (
-    <Button
+    <a
     type='link'
     onClick={logout}
     className='mx-2 text-danger'
-    >Logout</Button>
+    >Logout</a>
   )
 }
