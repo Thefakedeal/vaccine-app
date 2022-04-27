@@ -23,6 +23,7 @@ model User {
   vaccineRemainders Vaccine[]
   booked_appointments Appointment[] @relation("User")
   set_appointments Appointment[] @relation("Doctor")
+  vaccineRecommendations VaccineList[]
 }
 
 model Token {
@@ -49,6 +50,7 @@ model VaccineList {
   months Int
   description String? @db.Text
   bookings Vaccine[]
+  doctors User[]
 }
 
 model Vaccine {

@@ -41,6 +41,22 @@ router.get("/appointments",doctorAuth ,async (req, res, next) => {
   }
 });
 
+router.get("/recommendations",doctorAuth ,async (req, res, next) => {
+  try {
+    const doctor = await db.user.findUnique({
+      where:{
+        id: req.user.id
+      },
+      include:{
+        vaccineRecommendations: true
+      }
+    })
+    return res.json({ data: doctor.vaccineRecommendations });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     const doctor = await db.user.findFirst({

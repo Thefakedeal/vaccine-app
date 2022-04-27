@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { body, validationResult, param } = require('express-validator')
 const db = require('../../client')
-const { adminAuth } = require('../../middlewares')
+const { adminAuth, doctorAuth } = require('../../middlewares')
 
 
 const nameRequired = body('name').notEmpty()
@@ -34,6 +34,18 @@ router.get('/',async (req,res,next)=>{
                },
                months:{
                   gte: (months!==null && months !==undefined)?  Number(months) : undefined
+               }
+           },
+           orderBy:{
+            doctors:{
+                _count: 'desc'
+            }
+           },
+           include:{
+               _count:{
+                   select:{
+                       doctors: true
+                   }
                }
            }
         })
@@ -135,6 +147,70 @@ router.delete('/:id', adminAuth, idExists,async (req,res,next)=>{
         res.json({message:"Record Deleted", data: vaccineList})
     }catch(err){
         next(err)
+    }
+})
+
+
+router.get('/:id/recommendations', async (req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const vaccineId = Number(id);
+        const vaccine = await db.vaccineList.findFirst({
+            where:{
+                id: vaccineId
+            },
+            include:{
+               doctors: true, 
+            }
+        })
+        return res.json({data:vaccine.doctors})
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+router.post('/:id/recommendations', doctorAuth, async (req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const vaccineId = Number(id);
+        const vaccine = await db.vaccineList.update({
+            where:{
+                id: vaccineId
+            },
+            data:{
+                doctors:{
+                    connect:{
+                        id: Number(req.user.id)
+                    }
+                }
+            }
+        })
+        return res.json({message: "Recommendation Added"})
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.delete('/:id/recommendations', doctorAuth, async (req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const vaccineId = Number(id);
+        const vaccine = await db.vaccineList.update({
+            where:{
+                id: vaccineId
+            },
+            data:{
+                doctors:{
+                    disconnect:{
+                        id: Number(req.user.id)
+                    }
+                }
+            }
+        })
+        return res.json({message: "Recommendation Removed"})
+    } catch (error) {
+        next(error)
     }
 })
 module.exports = router
