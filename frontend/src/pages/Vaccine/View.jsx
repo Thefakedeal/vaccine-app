@@ -38,7 +38,7 @@ export default function View() {
                <div className="row">
                {
                   doctors.data.map(doctor=>(
-                    <div className="col-md-4">
+                    <div className="col-md-4" key={Math.random()}>
                       <DoctorCard doctor={doctor} />
                     </div>
                   ))
