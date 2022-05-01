@@ -12,6 +12,9 @@ export default function VaccineCard({vaccine, handleDelete, isAdmin,handleEdit})
            <div>
                Months: {vaccine.months}
            </div>
+           <div>
+               {vaccine._count.doctors} Doctor(s) Recommend
+           </div>
            <p className='py-1'>{new String(vaccine.description).substring(0,100)}
            <Link className='mx-1' to={`/vaccine/${vaccine.id}`}>Read More</Link>
            </p>
