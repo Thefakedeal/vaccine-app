@@ -48,7 +48,15 @@ router.get("/recommendations",doctorAuth ,async (req, res, next) => {
         id: req.user.id
       },
       include:{
-        vaccineRecommendations: true
+        vaccineRecommendations: {
+          include:{
+            _count:{
+                select:{
+                    doctors: true
+                }
+            }
+        }
+        },
       }
     })
     return res.json({ data: doctor.vaccineRecommendations });

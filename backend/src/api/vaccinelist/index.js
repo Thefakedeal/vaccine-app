@@ -169,6 +169,28 @@ router.get('/:id/recommendations', async (req,res,next)=>{
     }
 })
 
+router.get('/:id/recommended', doctorAuth,async (req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const vaccineId = Number(id);
+        const vaccine = await db.vaccineList.findFirst({
+            where:{
+                id: vaccineId,
+                doctors:{
+                    some:{
+                        id: Number(req.user.id)
+                    }
+                }
+            },
+            
+        })
+        return res.json({data:{
+            hasRecommended: !!vaccine
+        }})
+    } catch (error) {
+        next(error)
+    }
+})
 
 router.post('/:id/recommendations', doctorAuth, async (req,res,next)=>{
     try {
